@@ -1,0 +1,69 @@
+version: "3.9"
+
+services:
+  server:
+    image: webserver-server
+    container_name: webserver-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file:
+      - ./server/.env
+    environment:
+      - POSTGRES_HOST=database
+      - POSTGRES_DB=datastore
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=newpassword
+    volumes:
+      - ./server:/usr/src/app
+      - server_node_modules:/usr/src/app/node_modules
+    ports:
+      - 4000:4000
+    networks:
+      - app
+      - database
+    depends_on:
+      - database
+  # client:
+  #   image: webserver-client
+  #   container_name: webserver-client
+  #   restart: unless-stopped
+  #   env_file:
+  #     - ./client/.env
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./client:/usr/src/app
+  #     - client_node_modules:/usr/src/app/node_modules
+  #   depends_on:
+  #     - server
+  #   networks:
+  #     - app
+  database:
+    container_name: webserver-db
+    image: postgres
+    restart: always
+    env_file:
+      - ./server/.env
+    environment:
+      - POSTGRES_PASSWORD=newpassword
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db:/var/lib/postgresql/data
+      - ./server/config/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - database
+networks:
+  app: 
+    driver: bridge
+  database:
+    driver: bridge
+volumes:
+  db:
+    driver: local
+  server_node_modules:
+  client_node_modules:
