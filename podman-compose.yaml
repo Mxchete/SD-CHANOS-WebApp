@@ -24,24 +24,24 @@ services:
       - database
     depends_on:
       - database
-  # client:
-  #   image: webserver-client
-  #   container_name: webserver-client
-  #   restart: unless-stopped
-  #   env_file:
-  #     - ./client/.env
-  #   build:
-  #     context: ./client
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ./client:/usr/src/app
-  #     - client_node_modules:/usr/src/app/node_modules
-  #   depends_on:
-  #     - server
-  #   networks:
-  #     - app
+  client:
+    image: webserver-client
+    container_name: webserver-client
+    restart: unless-stopped
+    env_file:
+      - ./client/.env
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - server
+    networks:
+      - app
   database:
     container_name: webserver-db
     image: postgres
@@ -66,4 +66,3 @@ volumes:
   db:
     driver: local
   server_node_modules:
-  client_node_modules:
