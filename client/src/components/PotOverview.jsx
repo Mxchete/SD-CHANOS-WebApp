@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllPots } from '../api';
+import { getAllPots, getPlant } from '../api';
 
 const PotOverview = () => {
   const [pots, setPots] = useState([]);
@@ -8,16 +8,34 @@ const PotOverview = () => {
 
   useEffect(() => {
     const fetchPots = async () => {
-      const data = await getAllPots();
-      if (data) setPots(data);
+      const potsData = await getAllPots();
+
+      if (potsData && potsData.length > 0) {
+        const potsWithPlants = await Promise.all(
+          potsData.map(async (pot) => {
+            if (pot.plant_id) {
+              try {
+                const plant = await getPlant(pot.plant_id);
+                return { ...pot, plantName: plant?.name || 'Unknown Plant' };
+              } catch {
+                return { ...pot, plantName: 'Unknown Plant' };
+              }
+            } else {
+              return { ...pot, plantName: 'None' };
+            }
+          })
+        );
+        setPots(potsWithPlants);
+      }
+
       setLoading(false);
     };
+
     fetchPots();
   }, []);
 
   const handleCardClick = (pot) => {
     setExpandedPot(pot);
-    // return null;
   };
 
   const handleClose = () => {
@@ -40,7 +58,8 @@ const PotOverview = () => {
                 style={styles.potCard}
                 onClick={() => handleCardClick(pot)}
               >
-                <h3>{pot.id}</h3>
+                <h3 style={styles.uuidText}>{pot.id}</h3>
+                <p style={styles.plantText}>Plant: {pot.plantName}</p>
               </div>
             ))
           ) : (
@@ -55,6 +74,7 @@ const PotOverview = () => {
             </button>
             <h2>Pot Details</h2>
             <p><strong>Pot ID:</strong> {expandedPot.id}</p>
+            <p><strong>Plant:</strong> {expandedPot.plantName}</p>
             <p>More data coming soon...</p>
           </div>
         </div>
@@ -64,7 +84,7 @@ const PotOverview = () => {
 };
 
 const styles = {
- potGrid: {
+  potGrid: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
@@ -79,7 +99,15 @@ const styles = {
     backgroundColor: '#2E2E32',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
     cursor: 'pointer',
+    color: '#E3E3E3',
     transition: 'transform 0.25s ease, box-shadow 0.25s ease',
+  },
+  uuidText: {
+    marginBottom: '8px',
+  },
+  plantText: {
+    color: '#B8B8BB',
+    fontSize: '0.95rem',
   },
   expandedContainer: {
     display: 'flex',
@@ -98,6 +126,7 @@ const styles = {
     boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
     padding: '40px',
     textAlign: 'left',
+    color: '#E3E3E3',
     transition: 'transform 0.3s ease, box-shadow 0.3s ease',
   },
   closeButton: {

@@ -73,17 +73,32 @@ class PotService {
     if (water_level_is_low === true) {
       console.log("water level is low!");
       const { rows: notifications } = await pool.query(
-        `INSERT INTO notifications (user_id, header, message)
+        `INSERT INTO notifications (user_id, pot_id, header, message)
         VALUES ((
           SELECT user_id FROM pots WHERE id = $1),
-          $2, $3)
-        ON CONFLICT (user_id, header)
+          $1, $2, $3)
+        ON CONFLICT (user_id, header, pot_id)
         DO UPDATE SET
           message = EXCLUDED.message,
           created_at = NOW()
         RETURNING *;`,
-        [uuid, "Pot Water Level is low!", "One of your pots has a low water level!"]
+        [uuid, "Pot Water Level is low!", `Your pot ${uuid} is running low on water, please refill the pot now!`]
       );
+    }
+    else {
+      console.log("water level is not low, deleting notification");
+      const { rows: notifications } = await pool.query(
+        `DELETE FROM notifications
+        WHERE pot_id = $1
+          AND header = $2
+        RETURNING *;`,
+        [uuid, "Pot Water Level is low!"]
+      );
+      if (notifications.length > 0) {
+        console.log(`Deleted ${notifications.length} notification(s)`);
+      } else {
+        console.log("No existing low-water notification found to delete");
+      }
     }
 
     return pots[0];

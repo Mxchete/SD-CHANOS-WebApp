@@ -44,7 +44,9 @@ CREATE TABLE public.pots (
 
 -- NOTIFICATIONs
 CREATE TABLE public.notifications (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID,
+    pot_id UUID,
     header TEXT,
     message TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -84,7 +86,13 @@ ALTER TABLE public.notifications
     NOT VALID;
 
 ALTER TABLE public.notifications
-    ADD CONSTRAINT notifications_user_header_unique UNIQUE (user_id, header);
+    ADD FOREIGN KEY (pot_id)
+    REFERENCES public.pots (id)
+    ON DELETE CASCADE
+    NOT VALID;
+
+ALTER TABLE public.notifications
+    ADD CONSTRAINT notifications_user_header_unique UNIQUE (user_id, header, pot_id);
 
 -- Indexes for lookups
 CREATE INDEX ON plants (user_id);

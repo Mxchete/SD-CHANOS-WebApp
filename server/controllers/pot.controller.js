@@ -21,7 +21,6 @@ const getModifiedValidation = async (req, res) => {
 const setPlantForPot = async (req, res) => {
   const uuid = req.params.uuid;
   const plant_uuid = req.body.plant_uuid;
-  console.log(uuid);
 
   const results = await potService.setPlantForPot(uuid, plant_uuid);
   res.status(200).json(results);

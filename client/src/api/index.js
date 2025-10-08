@@ -20,7 +20,7 @@ export const getAllPots = async () => {
 // Route to /api/pot/get/:uuid
 export const getPot = async (uuid) => {
   try {
-    const res = await axios.get(`${baseURL}${pot}get/${uuid}`);
+    const res = await axios.get(`${baseURL}${potURL}get/${uuid}`);
     return res.data;
   } catch (error) {
     return null;
@@ -30,7 +30,43 @@ export const getPot = async (uuid) => {
 // Route to /api/pot/setPlantUUID/:uuid
 export const setPlantUUID = async (uuid, data) => {
   try {
-    const res = await axios.get(`${baseURL}${pot}setPlantUUID/${uuid}`, data);
+    const res = await axios.get(`${baseURL}${potURL}setPlantUUID/${uuid}`, data);
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+// Plant API interactions
+const plantURL = "plant/";
+
+// Route to /api/plant/get
+export const getAllPlants = async () => {
+  try {
+    const res = await axios.get(`${baseURL}${plantURL}get`);
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+// Route to /api/plant/get/:uuid
+export const getPlant = async (uuid) => {
+  try {
+    const res = await axios.get(`${baseURL}${plantURL}get/${uuid}`);
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+// Plant API interactions
+const notiURL = "dev-notifications/";
+
+// Route to /api/dev-notifications
+export const getNotis = async () => {
+  try {
+    const res = await axios.get(`${baseURL}${notiURL}`);
     return res.data;
   } catch (error) {
     return null;
