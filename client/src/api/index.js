@@ -30,7 +30,8 @@ export const getPot = async (uuid) => {
 // Route to /api/pot/setPlantUUID/:uuid
 export const setPlantUUID = async (uuid, data) => {
   try {
-    const res = await axios.get(`${baseURL}${potURL}setPlantUUID/${uuid}`, data);
+    const res = await axios.post(`${baseURL}${potURL}setPlantUUID/${uuid}`, data);
+    console.log(res);
     return res.data;
   } catch (error) {
     return null;
@@ -54,6 +55,16 @@ export const getAllPlants = async () => {
 export const getPlant = async (uuid) => {
   try {
     const res = await axios.get(`${baseURL}${plantURL}get/${uuid}`);
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+// Route to /api/plant/new
+export const addPlant = async (data) => {
+  try {
+    const res = await axios.post(`${baseURL}${plantURL}new`, data);
     return res.data;
   } catch (error) {
     return null;

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getAllPots, getPlant } from '../api';
 
 const PotOverview = () => {
   const [pots, setPots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedPot, setExpandedPot] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPots = async () => {
@@ -42,6 +44,10 @@ const PotOverview = () => {
     setExpandedPot(null);
   };
 
+  const handleUpdateClick = () => {
+    navigate(`/plant/${expandedPot.id}`);
+  }
+
   if (loading) {
     return <p style={{ textAlign: 'center', marginTop: '50px' }}>Loading pots...</p>;
   }
@@ -75,7 +81,19 @@ const PotOverview = () => {
             <h2>Pot Details</h2>
             <p><strong>Pot ID:</strong> {expandedPot.id}</p>
             <p><strong>Plant:</strong> {expandedPot.plantName}</p>
-            <p>More data coming soon...</p>
+            <p>Battery Level: {expandedPot.battery_level}</p>
+            <p>Current Soil Moisture Value: {expandedPot.current_moisture_level}</p>
+            <p>Lux: {expandedPot.lux_value}</p>
+            <p>Total Sunlight: {expandedPot.total_sunlight}</p>
+            <p>
+              {expandedPot.water_level_is_low
+                ? '!!! Needs Water !!!'
+                : 'Water level is good'}
+            </p>
+
+            <button style={styles.updateButton} onClick={handleUpdateClick}>
+              Update Plant Information
+            </button>
           </div>
         </div>
       )}
@@ -139,6 +157,17 @@ const styles = {
     fontSize: '1.5rem',
     cursor: 'pointer',
     color: '#E3E3E3',
+  },
+  updateButton: {
+    marginTop: '30px',
+    padding: '12px 20px',
+    borderRadius: '8px',
+    border: 'none',
+    backgroundColor: '#4A90E2',
+    color: '#fff',
+    fontSize: '1rem',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s ease',
   },
 };
 
