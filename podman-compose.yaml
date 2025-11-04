@@ -44,7 +44,7 @@ services:
       - app
   database:
     container_name: webserver-db
-    image: postgres
+    image: postgres:17.6
     restart: always
     env_file:
       - ./server/.env
