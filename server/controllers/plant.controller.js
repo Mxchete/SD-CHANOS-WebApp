@@ -1,7 +1,7 @@
 const plantService = require("../services/plant.service");
 
 const newPlant = async (req, res) => {
-  // const user_id = req.body.user_id; // TODO: integrate users
+  const user_id = req.body.user_id; // TODO: integrate users
   const name = req.body.name;
   const watering_timer_useconds = req.body.watering_timer_useconds;
   const sampling_period = req.body.sampling_period;
@@ -11,7 +11,7 @@ const newPlant = async (req, res) => {
   const maximum_sunlight = req.body.maximum_sunlight;
 
   const results = await plantService.createPlant(
-    // user_id,
+    user_id,
     name,
     watering_timer_useconds,
     sampling_period,

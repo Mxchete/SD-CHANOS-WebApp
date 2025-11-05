@@ -1,9 +1,12 @@
 // Thank you google documentation
+// TODO: bulk of this can probably be reformatted out of this file and into the rest of the API structure, time permitting
 const {google} = require('googleapis');
+const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 const express = require('express');
 const session = require('express-session');
 const dotenv = require("dotenv");
+const pool = require("../config");
 
 dotenv.config();
 

@@ -5,10 +5,15 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 -- TODO: Total refactor of users
 CREATE TABLE public.users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    username TEXT NOT NULL UNIQUE,
-    -- password_hash TEXT NOT NULL, -- passwords through google oauth once that works
+    email VARCHAR(320) UNIQUE NOT NULL,
+    google_id VARCHAR(255) UNIQUE,
+    name VARCHAR(255),
+    given_name VARCHAR(255),
+    family_name VARCHAR(255),
+    picture_url TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    last_login_at TIMESTAMP WITH TIME ZONE
 );
 
 -- PLANTS

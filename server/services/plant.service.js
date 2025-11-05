@@ -2,7 +2,7 @@ const pool = require("../config");
 
 class PlantService {
   createPlant = async (
-    // user_id,
+    user_id,
     name,
     watering_timer_useconds,
     sampling_period,
@@ -13,7 +13,8 @@ class PlantService {
   ) => {
     const { rows: plants } = await pool.query(
       `INSERT INTO plants
-        (name,
+        (user_id,
+        name,
         watering_timer_useconds,
         sampling_period,
         maximum_moisture_level,
@@ -21,9 +22,9 @@ class PlantService {
         smv_percentage,
         maximum_sunlight) 
       VALUES
-        ($1, $2, $3, $4, $5, $6, $7)
+        ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING id`,
-      [name, watering_timer_useconds, sampling_period, maximum_moisture_level, minimum_moisture_level, smv_percentage, maximum_sunlight]
+      [user_id, name, watering_timer_useconds, sampling_period, maximum_moisture_level, minimum_moisture_level, smv_percentage, maximum_sunlight]
     );
     return plants[0];
   };

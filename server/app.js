@@ -5,7 +5,7 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const potRoute = require("./routes/pot");
-// const userRoute = require("./routes/user");
+const userRoute = require("./routes/user");
 const plantRoute = require("./routes/plant");
 const devNotifications = require("./routes/notifications");
 
@@ -33,7 +33,7 @@ app.use("/api/auth", gAuth);
 
 // define API routing information
 app.use("/api/pot", potRoute);
-// app.use("/api/user", userRoute);
+app.use("/api/user", userRoute);
 app.use("/api/plant", plantRoute);
 app.use("/api/dev-notifications", devNotifications);
 
