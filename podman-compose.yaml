@@ -44,7 +44,7 @@ services:
       - app
   database:
     container_name: webserver-db
-    image: postgres
+    image: postgres:14-alpine
     restart: always
     env_file:
       - ./server/.env

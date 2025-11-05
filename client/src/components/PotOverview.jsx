@@ -48,12 +48,44 @@ const PotOverview = () => {
     navigate(`/plant/${expandedPot.id}`);
   }
 
+  const handleHomeClick = () => {
+    navigate('/');
+  };
+
+  const handlePlantClick = () => {
+    const element = document.getElementById("add_plant");
+    if(element.style.display == "none") {
+      document.getElementById("add_plant").style.display = "inline-block";
+      document.getElementById("view_plant").style.display = "inline-block";
+    }
+    else {
+      document.getElementById("add_plant").style.display = "none";
+      document.getElementById("view_plant").style.display = "none";
+    }
+  };
+
   if (loading) {
     return <p style={{ textAlign: 'center', marginTop: '50px' }}>Loading pots...</p>;
   }
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '30px' }}>
+    <div style={styles.parent}>
+      <div style={styles.toolbar}>
+        <h1>Toolbar</h1>
+        <button type="button" style={styles.toolbarButton} onClick={() => handleHomeClick()}>
+          Home
+        </button>
+        <button type="button" style={styles.toolbarButton} onClick={() => handlePlantClick()}>
+          Plants
+        </button>
+        <button type="button" style={styles.toolbarPlantButton} id="add_plant">Add Plant</button>
+        <button type="button" style={styles.toolbarPlantButton} id="view_plant">View Plants</button>
+        <button type="button" style={styles.toolbarButton} >Account</button>
+        <button type="button" style={styles.toolbarButton} >About</button>
+        <button type="button" style={styles.toolbarButton} >Videos</button>
+      </div>
+
+    <div style={{ textAlign: 'center', marginTop: '30px', backgroundColor: '#202023', flex: '1' }}>
       <h1>Pot Overview</h1>
       {!expandedPot ? (
         <div style={styles.potGrid}>
@@ -98,10 +130,43 @@ const PotOverview = () => {
         </div>
       )}
     </div>
+    </div>
   );
 };
 
 const styles = {
+  parent: {
+    display: 'flex',
+    //justifyContent: 'space-around',
+    //alignItems: 'flex-start',
+    //border: '1px solid #ccc',
+    //padding: '10px',
+    position: 'absolute',
+    top: '0', right: '0', bottom: '0', left: '0',
+  },
+  toolbar: {
+    display: 'inline-flex',
+    flexDirection: 'column',
+    //flex: '1', /* Allows divs to grow and shrink proportionally */
+    justifyContent: 'left',
+    padding: '15px',
+    width: '250px',
+    //border: '1px solid #eee',
+    margin: '5px',
+    backgroundColor: '#28282B'
+  },
+  toolbarButton: {
+    backgroundColor: '#2E2E32',
+    fontSize: '25px',
+    fontWeight: 'bolder',
+  },
+  toolbarPlantButton: {
+    display: 'none',
+    backgroundColor: '#3E3E42',
+    textAlign: 'right',
+    fontSize: '20px',
+    fontWeight: 'bold',
+  },
   potGrid: {
     display: 'flex',
     flexWrap: 'wrap',
