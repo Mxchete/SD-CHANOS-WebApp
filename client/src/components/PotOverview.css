@@ -1,0 +1,29 @@
+.list-container {
+  padding: 1rem;
+}
+
+.focused-card {
+  margin-bottom: 1.5rem;
+  z-index: 2;
+}
+
+.close-btn {
+  background-color: var(--button-background);
+  color: var(--foreground-color);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: clamp(5px, 1vw, 8px) clamp(10px, 2vw, 12px); 
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.close-btn:hover {
+  opacity: 0.9;
+}
+
+.plant-list-stub {
+  padding: 1rem;
+  margin-top: 1rem;
+}

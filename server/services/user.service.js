@@ -24,7 +24,7 @@ class UserService {
   getUserPlants = async(user_id) => {
     const { rows } = await pool.query(
       `SELECT * FROM plants 
-      WHERE user_id = $1 
+      WHERE user_id = $1 OR user_id IS NULL
       ORDER BY created_at DESC`,
       [user_id]
     );

@@ -128,6 +128,24 @@ class PotService {
   createNotification = async (uuid, msg) => {
     return null;
   };
+
+  updatePot = async(uuid, data) => {
+    const keys = Object.keys(data);
+    if (keys.length === 0) return getPotByUUID(uuid);
+
+    const setClauses = keys.map((key, i) => `${key} = $${i + 1}`).join(", ");
+    const values = Object.values(data);
+
+    const query = `
+      UPDATE pots
+      SET ${setClauses}, updated_at = now()
+      WHERE id = $${keys.length + 1}
+      RETURNING *;
+    `;
+
+    const { rows } = await pool.query(query, [...values, uuid]);
+    return rows[0];
+  };
 }
 
 module.exports = new PotService();

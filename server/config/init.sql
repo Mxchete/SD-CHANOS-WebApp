@@ -36,8 +36,10 @@ CREATE TABLE public.plants (
 -- POTs
 CREATE TABLE public.pots (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL DEFAULT 'Unnamed Plant',
     user_id UUID,
     plant_id UUID,
+    image_url TEXT,
     battery_level DOUBLE PRECISION,
     water_level_is_low BOOLEAN,
     current_moisture_level DOUBLE PRECISION,

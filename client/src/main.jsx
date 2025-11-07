@@ -5,6 +5,7 @@ import './index.css'
 import App from './App.jsx'
 import PotOverview from './components/OverviewPage';
 import PlantPage from './components/PlantPage';
+import DemoList from './components/TestPage.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>

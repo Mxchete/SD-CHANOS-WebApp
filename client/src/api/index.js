@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:4000/api/";
+const url = "http://localhost:4000";
+
+const baseURL = `${url}/api/`;
 
 // Pot API interactions
 const potURL = "pot/";
@@ -24,6 +26,34 @@ export const getPot = async (uuid) => {
     return res.data;
   } catch (error) {
     return null;
+  }
+};
+
+export const updatePot = async (uuid, data) => {
+  try {
+    const res = await axios.post(`${baseURL}${potURL}update/${uuid}`, data, {
+      withCredentials: true,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error updating pot:", error);
+    return null;
+  }
+};
+
+export const uploadPotImage = async (uuid, formData) => {
+  try {
+    const res = await axios.post(
+      `${baseURL}${potURL}upload-image/${uuid}`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.error("Error uploading pot image:", err);
+    throw err;
   }
 };
 
@@ -82,4 +112,62 @@ export const getNotis = async () => {
   } catch (error) {
     return null;
   }
+};
+
+const authURL = "auth/";
+
+export const loginWithGoogle = async (credential) => {
+  try {
+    const res = await axios.post(`${baseURL}${authURL}google/verify`, 
+      { credential }, 
+      { withCredentials: true }
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Google token verification failed:", error);
+    return null;
+  }
+};
+
+const userURL = "user/";
+
+export const getUserProfile = async () => {
+  try {
+    const res = await axios.get(`${baseURL}${userURL}get`, {
+      withCredentials: true,
+    });
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getUserPots = async () => {
+  try {
+    const res = await axios.get(`${baseURL}${userURL}getPots`, {
+      withCredentials: true,
+    });
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getUserPlants = async () => {
+  try {
+    const res = await axios.get(`${baseURL}${userURL}getPlants`, {
+      withCredentials: true,
+    });
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getPotImageUrl = (imagePath) => {
+  if (!imagePath) return null;
+  return `${url}${imagePath}`;
 };

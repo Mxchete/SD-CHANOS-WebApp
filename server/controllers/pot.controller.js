@@ -1,4 +1,5 @@
 const potService = require("../services/pot.service");
+const path = require("path");
 
 // Called by ESP to connect a pot to the DB, generates a new DB object w/ UUID
 // Used by pot
@@ -80,6 +81,38 @@ const sendNotification = async (req, res) => {
   res.status(200).json(results);
 };
 
+const updatePot = async (req, res) => {
+  try {
+    const uuid = req.params.uuid;
+    const data = req.body;
+
+    const updated = await potService.updatePot(uuid, data);
+    res.json(updated);
+  } catch (err) {
+    console.error("Error updating pot:", err);
+    res.status(500).json({ error: "Failed to update pot" });
+  }
+};
+
+const uploadPotImage = async (req, res) => {
+  try {
+    const uuid = req.params.uuid;
+
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    const imageUrl = `/uploads/${req.file.filename}`;
+
+    const updated = await potService.updatePot(uuid, { image_url: imageUrl });
+
+    res.json(updated);
+  } catch (err) {
+    console.error("Error uploading image:", err);
+    res.status(500).json({ error: "Failed to upload image" });
+  }
+};
+
 module.exports = {
   getNewUUID,
   getModifiedValidation,
@@ -89,5 +122,7 @@ module.exports = {
   sendMeasurements,
   sendNotification,
   getPot,
-  getAllPots
+  getAllPots,
+  updatePot,
+  uploadPotImage
 };

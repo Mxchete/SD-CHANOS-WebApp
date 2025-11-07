@@ -1,5 +1,6 @@
 // API for the pot to interact with the server
 const router = require("express").Router();
+const upload = require("../middleware/upload");
 const {
   getNewUUID,
   getModifiedValidation,
@@ -8,7 +9,9 @@ const {
   sendMeasurements,
   sendNotification,
   getPot,
-  getAllPots
+  getAllPots,
+  updatePot,
+  uploadPotImage
 } = require("../controllers/pot.controller");
 
 router.get("/get", getAllPots);
@@ -21,6 +24,10 @@ router.get("/genUUID", getNewUUID);
 // Flag to see if static plant data was modified
 // @param: UUID - Pot UUID
 router.get("/modified/:uuid", getModifiedValidation);
+
+router.post("/update/:uuid", updatePot);
+
+router.post("/upload-image/:uuid", upload.single("image"), uploadPotImage);
 
 // Give pot a plant uuid
 // @param: UUID - Pot UUID

@@ -8,6 +8,7 @@ const potRoute = require("./routes/pot");
 const userRoute = require("./routes/user");
 const plantRoute = require("./routes/plant");
 const devNotifications = require("./routes/notifications");
+const path = require("path");
 
 // Google Oauth
 const gAuth = require("./auth/google.js");
@@ -36,6 +37,9 @@ app.use("/api/pot", potRoute);
 app.use("/api/user", userRoute);
 app.use("/api/plant", plantRoute);
 app.use("/api/dev-notifications", devNotifications);
+
+// Static images
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.get("/", (req, res) =>
   res.send("<h1 style='text-align: center'>CHANOS Webserver API</h1> <a href='/api/auth/google'>Login with Google</a>")

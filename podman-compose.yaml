@@ -16,6 +16,7 @@ services:
       - POSTGRES_PASSWORD=newpassword
     volumes:
       - ./server:/usr/src/app
+      - ./uploads:/usr/src/app/uploads
       - server_node_modules:/usr/src/app/node_modules
     ports:
       - 4000:4000

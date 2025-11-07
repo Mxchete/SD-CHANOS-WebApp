@@ -1,0 +1,43 @@
+:root {
+  --background-color: #0f5e40;
+  --foreground-color: #ffffff;
+  --card-background: #1a6e4f;
+  --button-background: #237f5f;
+  --button-hover: #4a9f7e;
+  --border-radius: 12px;
+  --padding: 12px;
+  --font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-width: 2400px;
+  margin: 2rem auto;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.section-title {
+  grid-column: 1 / -1;
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  text-align: center;
+}
+/**/
+/* @media (max-width: 600px) { */
+/*   .demo-list { */
+/*     grid-template-columns: 1fr; */
+/*     padding: 1rem; */
+/*   } */
+/* } */
+
