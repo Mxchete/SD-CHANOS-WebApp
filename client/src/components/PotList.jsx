@@ -36,7 +36,7 @@ const PotList = ({ pots, focusedPot, buttonClick }) => {
               <p>Current Soil Moisture Value: {isAvailable(pot.current_moisture_level)}</p>
               <p>Lux: {isAvailable(pot.lux_value)}</p>
               <p>Total Sunlight: {isAvailable(pot.total_sunlight)}</p>
-              <p>{isAvailable(pot.water_level_is_low)}</p>
+              <p>{pot.water_level_is_low ? "Water level is low" : "Water level is good"}</p>
             </ListCard>
           </motion.div>
         );

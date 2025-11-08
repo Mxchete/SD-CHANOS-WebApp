@@ -41,7 +41,7 @@ const PlantList = ({ plants, userUuid, onSelectPlant, selectedPlantUuid }) => {
       name,
       watering_timer_useconds: Number(wateringTimer) * 60 * 1_000_000,
       sampling_period: Number(samplingPeriod) * 60 * 1_000_000,
-      smv_percentage: Number(smv),
+      smv_percentage: Number(smv / 100),
       maximum_sunlight: Number(maxSunlight),
     };
 
@@ -77,9 +77,10 @@ const PlantList = ({ plants, userUuid, onSelectPlant, selectedPlantUuid }) => {
             onButtonClick={() => onSelectPlant(plant.id)}
             extraStyles={selectedPlantUuid === plant.id ? "selected-plant" : ""}
           >
-            <p>
-              <strong>Sampling Period:</strong> {plant.sampling_period ?? "N/A"}
-            </p>
+            <p><strong>Sampling Period:</strong> {`${plant.sampling_period / 60 / 1_000_000} minutes`  ?? "N/A"}</p>
+            <p><strong>Water Every:</strong> {`${plant.watering_timer_useconds / 60 / 1_000_000} minutes`  ?? "N/A"}</p>
+            <p><strong>Soil Moisture Percentage to Water At:</strong> {`${plant.smv_percentage * 100}%`  ?? "N/A"}</p>
+            <p><strong>Maximum Sunlight Level:</strong> {`${plant.maximum_sunlight}`  ?? "N/A"}</p>
           </ListCard>
         ))}
 
