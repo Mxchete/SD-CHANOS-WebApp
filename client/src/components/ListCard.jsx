@@ -15,7 +15,9 @@ export default function ListCard({
   onImageSelect,
   children,
   forceRegular = false,
+  forceExpanded = false,
   editable = false,
+  extraStyles = "",
 }) {
   const [expanded, setExpanded] = useState(false);
   const contentRef = useRef(null);
@@ -63,11 +65,13 @@ export default function ListCard({
     }
   };
 
+  const name = `list-card ${expanded ? "expanded" : ""} ${
+        forceRegular ? "regular-card" : ""
+      } ${editable ? "editable-card" : ""} ${extraStyles}`.trim();
+
   return (
     <div
-      className={`list-card ${expanded ? "expanded" : ""} ${
-        forceRegular ? "regular-card" : ""
-      } ${editable ? "editable-card" : ""}`}
+      className={name}
       onClick={handleCardClick}
     >
       <div className="card-header">
@@ -149,7 +153,7 @@ export default function ListCard({
       <div
         ref={contentRef}
         className="card-content"
-        style={{ maxHeight: height }}
+        style={{ maxHeight: forceExpanded ? "none" : height }}
       >
         <div className="card-content-inner">{children}</div>
       </div>

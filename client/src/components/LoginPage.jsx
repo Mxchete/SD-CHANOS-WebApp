@@ -1,18 +1,32 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import "../global.css";
 import "./LoginPage.css";
-import { loginWithGoogle } from "../api";
+import { loginWithGoogle, assignPotToUser } from "../api";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const handleSuccess = async(credentialResponse) => {
+  const [searchParams] = useSearchParams();
+  const potUUID = searchParams.get("uuid");
+
+  const handleSuccess = async (credentialResponse) => {
     console.log("Google login success:", credentialResponse);
     try {
+      // Log the user in
       const result = await loginWithGoogle(credentialResponse.credential);
 
       if (result && result.success) {
+
+        if (potUUID) {
+          try {
+            await assignPotToUser(potUUID);
+            console.log(`Pot ${potUUID} assigned to user ${result.user.id}`);
+          } catch (assignErr) {
+            console.error("Failed to assign pot:", assignErr);
+          }
+        }
+
         navigate(`/overview`);
       } else {
         console.error("Login response invalid:", result);
@@ -22,7 +36,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleError = async() => {
+  const handleError = async () => {
     console.error("Google login failed");
   };
 

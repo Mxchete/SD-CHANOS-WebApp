@@ -167,6 +167,21 @@ export const getUserPlants = async () => {
   }
 };
 
+export const assignPotToUser = async (potUUID) => {
+  try {
+    const res = await axios.post(
+      `${baseURL}${userURL}connectPot`,
+      { pot_id: potUUID },
+      { withCredentials: true }
+    );
+    console.log("Pot assigned:", res.data);
+    return res.data;
+  } catch (error) {
+    console.error("assignPotToUser error:", error);
+    return null;
+  }
+};
+
 export const getPotImageUrl = (imagePath) => {
   if (!imagePath) return null;
   return `${url}${imagePath}`;

@@ -63,7 +63,7 @@ const PotOverview = () => {
       if (!focusedPot) {
         await fetchPots();
       }
-    }, 5000);
+    }, 60000);
     return () => clearInterval(interval);
   }, [fetchPots, isRefreshPaused]);
 

@@ -4,21 +4,21 @@ import ListCard from "./ListCard";
 import PlantList from "./PlantList";
 import "../global.css";
 import "./PotOverview.css";
-import { updatePot, uploadPotImage, getPotImageUrl } from "../api";
+import "./PlantList.css";
+import { updatePot, uploadPotImage, getPotImageUrl, setPlantUUID } from "../api";
 
 const FocusedPot = ({ focusedPot, plants, onClose, onSave, setIsRefreshPaused }) => {
   const [editedTitle, setEditedTitle] = useState("");
   const [editedImageFile, setEditedImageFile] = useState(null);
+  const [selectedPlantUuid, setSelectedPlantUuid] = useState(focusedPot?.plant_id || null);
+
   useEffect(() => {
-    if (focusedPot) {
-      setEditedTitle(focusedPot.name || "");
-    }
+    if (focusedPot) setEditedTitle(focusedPot.name || "");
+    if (focusedPot) setSelectedPlantUuid(focusedPot.plant_id || null);
   }, [focusedPot]);
 
   useEffect(() => {
-    if (focusedPot) {
-      setIsRefreshPaused(true);
-    }
+    if (focusedPot) setIsRefreshPaused(true);
   }, [focusedPot]);
 
   const handleSave = async () => {
@@ -29,6 +29,12 @@ const FocusedPot = ({ focusedPot, plants, onClose, onSave, setIsRefreshPaused })
         const formData = new FormData();
         formData.append("image", editedImageFile);
         await uploadPotImage(focusedPot.id, formData);
+      }
+
+      console.log(selectedPlantUuid);
+      console.log(focusedPot.plant_id);
+      if (selectedPlantUuid && selectedPlantUuid !== focusedPot.plant_id) {
+        await setPlantUUID(focusedPot.id, { plant_uuid: selectedPlantUuid });
       }
 
       if (onSave) await onSave();
@@ -53,8 +59,8 @@ const FocusedPot = ({ focusedPot, plants, onClose, onSave, setIsRefreshPaused })
             subtitle={focusedPot.plantName}
             image={getPotImageUrl(focusedPot.image_url) || null}
             editable
-            onTitleChange={(title) => setEditedTitle(title)}
-            onImageSelect={(file) => setEditedImageFile(file)}
+            onTitleChange={setEditedTitle}
+            onImageSelect={setEditedImageFile}
             buttonLabel="Cancel"
             onButtonClick={onClose}
           />
@@ -68,9 +74,12 @@ const FocusedPot = ({ focusedPot, plants, onClose, onSave, setIsRefreshPaused })
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
             >
-              <div className="list">
-                <PlantList plants={plants} />
-              </div>
+              <PlantList
+                plants={plants}
+                userUuid={focusedPot.user_uuid}
+                selectedPlantUuid={selectedPlantUuid}
+                onSelectPlant={setSelectedPlantUuid}
+              />
             </motion.div>
           </AnimatePresence>
 
