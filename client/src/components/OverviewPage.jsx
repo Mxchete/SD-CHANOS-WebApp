@@ -6,7 +6,6 @@ import UserProfileIcon from "./ProfileIcon";
 const OverviewPage = () => (
   <div>
     <UserProfileIcon />
-    <Notifications />
     <PotOverview />
   </div>
 );

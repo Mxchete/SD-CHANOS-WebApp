@@ -37,12 +37,12 @@ const PlantList = ({ plants, userUuid, onSelectPlant, selectedPlantUuid }) => {
     setLoading(true);
 
     const dataToSend = {
-      user_uuid: userUuid,
+      user_id: userUuid,
       name,
       watering_timer_useconds: Number(wateringTimer) * 60 * 1_000_000,
       sampling_period: Number(samplingPeriod) * 60 * 1_000_000,
       smv_percentage: Number(smv),
-      max_sunlight: Number(maxSunlight),
+      maximum_sunlight: Number(maxSunlight),
     };
 
     const newPlant = await addPlant(dataToSend);

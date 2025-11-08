@@ -76,7 +76,7 @@ const FocusedPot = ({ focusedPot, plants, onClose, onSave, setIsRefreshPaused })
             >
               <PlantList
                 plants={plants}
-                userUuid={focusedPot.user_uuid}
+                userUuid={focusedPot.user_id}
                 selectedPlantUuid={selectedPlantUuid}
                 onSelectPlant={setSelectedPlantUuid}
               />

@@ -2,7 +2,7 @@
   position: fixed;
   top: 1rem;
   left: 1rem;
-  z-index: 1000;
+  z-index: 5000;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -12,6 +12,7 @@
   padding: 0.25rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: fixed,
 }
 
 .user-profile-icon:hover {

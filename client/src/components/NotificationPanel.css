@@ -1,0 +1,65 @@
+.notifications-panel {
+  background: var(--card-background);
+  color: var(--foreground-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-elevation);
+  margin: 16px auto;
+  padding: 12px 16px;
+  max-width: 500px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.notifications-panel.expanded {
+  cursor: default;
+}
+
+.notif-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notif-list {
+  margin-top: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.notif-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.notif-item:hover {
+  transform: translateY(0px);
+  box-shadow: 0;
+}
+
+.notif-item h4 {
+  margin: 0;
+  font-size: 1em;
+}
+
+.notif-item p {
+  margin: 4px 0;
+  font-size: 0.9em;
+}
+
+.notif-empty {
+  text-align: center;
+  opacity: 0.6;
+}
+
+.notif-loading {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.notifications-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}

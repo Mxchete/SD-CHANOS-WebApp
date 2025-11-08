@@ -182,6 +182,18 @@ export const assignPotToUser = async (potUUID) => {
   }
 };
 
+export const getUserNotifications = async () => {
+  try {
+    const res = await axios.get(`${baseURL}${userURL}getNotifs`, {
+      withCredentials: true,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    return null;
+  }
+};
+
 export const getPotImageUrl = (imagePath) => {
   if (!imagePath) return null;
   return `${url}${imagePath}`;
