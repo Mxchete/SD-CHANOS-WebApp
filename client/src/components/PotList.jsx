@@ -4,7 +4,7 @@ import ListCard from "./ListCard";
 import { getPotImageUrl } from "../api";
 
 const PotList = ({ pots, focusedPot, buttonClick }) => {
-  const isAvailable = (item) => (!item ? "N/A" : item);
+  const isAvailable = (item) => ((item === null) ? "N/A" : item);
 
   return (
     <div className="list">
@@ -32,7 +32,7 @@ const PotList = ({ pots, focusedPot, buttonClick }) => {
             >
               <p><strong>Pot ID:</strong> {isAvailable(pot.id)}</p>
               <p><strong>Plant:</strong> {pot.plantName}</p>
-              <p>Battery Level: {isAvailable(pot.battery_level)}</p>
+              <p>Battery Level: {(pot.battery_level !== null) ? `${Math.round(((pot.battery_level - 6) * 100)/2.4)}%` : "N/A"}</p>
               <p>Current Soil Moisture Value: {isAvailable(pot.current_moisture_level)}</p>
               <p>Lux: {isAvailable(pot.lux_value)}</p>
               <p>Total Sunlight: {isAvailable(pot.total_sunlight)}</p>

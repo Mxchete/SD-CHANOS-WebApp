@@ -45,9 +45,12 @@ const sendMeasurements = async (req, res) => {
   // Info to be sent to DB
   const battery_level = req.body.battery_level;
   const water_level_is_low = req.body.water_level_is_low;
-  const current_smv = req.body.current_moisture_level;
+  const current_smv = req.body.current_smv;
   const lux_value = req.body.lux_value;
   const total_sunlight = req.body.total_sunlight;
+
+  const now = new Date();
+  console.log(`Update received at: ${now.toString()}`);
 
   const results = await potService.updatePlantMeasurements(
     uuid,

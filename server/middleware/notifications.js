@@ -1,12 +1,12 @@
 const pool = require("../config");
 
 async function handlePotNotifications(uuid, battery_level, water_level_is_low, total_sunlight) {
-  console.log("handlePotNotifications called with:", {
-    uuid,
-    battery_level,
-    water_level_is_low,
-    total_sunlight,
-  });
+  // console.log("handlePotNotifications called with:", {
+  //   uuid,
+  //   battery_level,
+  //   water_level_is_low,
+  //   total_sunlight,
+  // });
 
   const { rows: pots } = await pool.query(
     `SELECT pots.id, pots.user_id, pots.name, plants.maximum_sunlight
@@ -22,7 +22,7 @@ async function handlePotNotifications(uuid, battery_level, water_level_is_low, t
   }
 
   const pot = pots[0];
-  console.log(pot);
+  // console.log(pot);
 
   const notificationsToCreate = [];
 
@@ -33,7 +33,7 @@ async function handlePotNotifications(uuid, battery_level, water_level_is_low, t
     });
   }
 
-  if (battery_level < 3) {
+  if (battery_level < 6.25) {
     notificationsToCreate.push({
       header: "Battery Level Low",
       message: `Your pot ${pot.name} has a low battery, please recharge it!`,
