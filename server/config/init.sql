@@ -24,11 +24,17 @@ CREATE TABLE public.plants (
     name TEXT NOT NULL,
     -- image_url TEXT, -- not supported yet
     watering_timer_useconds BIGINT,
-    sampling_period INT,
+    sampling_period BIGINT,
+    sampling_period_minutes INT,
+    sampling_period_hours INT,
+    sampling_period_days INT,
     maximum_moisture_level DOUBLE PRECISION,
     minimum_moisture_level DOUBLE PRECISION,
     smv_percentage DOUBLE PRECISION,
-    maximum_sunlight DOUBLE PRECISION,
+    maximum_sunlight BIGINT,
+    max_sunlight_minutes INT,
+    max_sunlight_hours INT,
+    max_sunlight_days INT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

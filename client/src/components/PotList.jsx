@@ -34,8 +34,8 @@ const PotList = ({ pots, focusedPot, buttonClick }) => {
               <p><strong>Plant:</strong> {pot.plantName}</p>
               <p>Battery Level: {(pot.battery_level !== null) ? `${Math.round(((pot.battery_level - 6) * 100)/2.4)}%` : "N/A"}</p>
               <p>Current Soil Moisture Value: {isAvailable(pot.current_moisture_level)}</p>
-              <p>Lux: {isAvailable(pot.lux_value)}</p>
-              <p>Total Sunlight: {isAvailable(pot.total_sunlight)}</p>
+              <p>Light Level: {isAvailable(pot.lux_value)}</p>
+              <p>Total Time in Sunlight: {isAvailable(pot.total_sunlight)}</p>
               <p>{pot.water_level_is_low ? "Water level is low" : "Water level is good"}</p>
             </ListCard>
           </motion.div>

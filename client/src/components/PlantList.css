@@ -2,3 +2,7 @@
   border: 2px solid #4caf50;
   background-color: var(--button-background);
 }
+
+.plant-card {
+  /* max-width: 40%; */
+}

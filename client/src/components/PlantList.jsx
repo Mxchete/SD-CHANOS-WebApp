@@ -1,67 +1,55 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
 import ListCard from "./ListCard";
-import { getUserPlants, addPlant } from "../api";
+import NewPlantForm from "./NewPlantForm";
+import { getUserPlants } from "../api";
 import "../global.css";
 import "./ListCard.css";
 import "./PlantList.css";
 
+dayjs.extend(duration);
+
 const PlantList = ({ plants, userUuid, onSelectPlant, selectedPlantUuid }) => {
   const [plantList, setPlantList] = useState(plants || []);
-
-  const [formData, setFormData] = useState({
-    name: "",
-    wateringTimer: "",
-    samplingPeriod: "",
-    smv: "",
-    maxSunlight: "",
-  });
   const [showForm, setShowForm] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const formatTime = (microseconds) => {
+    const ms = Number(microseconds) / 1000;
+    const dur = dayjs.duration(ms);
+
+    const days = dur.days();
+    const hours = dur.hours();
+    const minutes = dur.minutes();
+
+    const parts = [];
+    if (days) parts.push(`${days} day${days !== 1 ? "s" : ""}`);
+    if (hours) parts.push(`${hours} hour${hours !== 1 ? "s" : ""}`);
+    if (minutes || parts.length === 0) parts.push(`${minutes} minute${minutes !== 1 ? "s" : ""}`);
+
+    return parts.join(", ");
+  };
+
+  const getPrefSMV = (smv_percent) => {
+    const smv = Math.round(smv_percent * 100);
+    if (smv >= 80) {
+      return "Wet";
+    }
+    else if (smv >= 65) {
+      return "Moist";
+    }
+    else if (smv >= 35) {
+      return "Damp";
+    }
+    else {
+      return "Dry";
+    }
+  }
 
   useEffect(() => {
     setPlantList(plants || []);
   }, [plants]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleAddPlant = async () => {
-    const { name, wateringTimer, samplingPeriod, smv, maxSunlight } = formData;
-    if (!name || !wateringTimer || !samplingPeriod || !smv || !maxSunlight) {
-      alert("Please fill all fields before submitting.");
-      return;
-    }
-
-    setLoading(true);
-
-    const dataToSend = {
-      user_id: userUuid,
-      name,
-      watering_timer_useconds: Number(wateringTimer) * 60 * 1_000_000,
-      sampling_period: Number(samplingPeriod) * 60 * 1_000_000,
-      smv_percentage: Number(smv / 100),
-      maximum_sunlight: Number(maxSunlight),
-    };
-
-    const newPlant = await addPlant(dataToSend);
-    if (newPlant) {
-      const updatedPlants = await getUserPlants(userUuid);
-      setPlantList(updatedPlants || []);
-
-      setFormData({
-        name: "",
-        wateringTimer: "",
-        samplingPeriod: "",
-        smv: "",
-        maxSunlight: "",
-      });
-      setShowForm(false);
-    }
-
-    setLoading(false);
-  };
 
   return (
     <div className="plant-list">
@@ -71,64 +59,46 @@ const PlantList = ({ plants, userUuid, onSelectPlant, selectedPlantUuid }) => {
           <ListCard
             key={plant.id}
             title={plant.name}
-            subtitle={""}
+            subtitle=""
             image="null"
             buttonLabel="Select"
             onButtonClick={() => onSelectPlant(plant.id)}
             extraStyles={selectedPlantUuid === plant.id ? "selected-plant" : ""}
           >
-            <p><strong>Sampling Period:</strong> {`${plant.sampling_period / 60 / 1_000_000} minutes`  ?? "N/A"}</p>
-            <p><strong>Water Every:</strong> {`${plant.watering_timer_useconds / 60 / 1_000_000} minutes`  ?? "N/A"}</p>
-            <p><strong>Soil Moisture Percentage to Water At:</strong> {`${plant.smv_percentage * 100}%`  ?? "N/A"}</p>
-            <p><strong>Maximum Sunlight Level:</strong> {`${plant.maximum_sunlight}`  ?? "N/A"}</p>
+            <p><strong>Water With:</strong> {`${100 * (plant.watering_timer_useconds / 60 / 1_000_000 / 1.5)} mL of Water` ?? "N/A"}</p>
+            <p><strong>Sampling Period:</strong> {(plant.sampling_period === null) ? "N/A" : `${plant.sampling_period_days} day(s), ${plant.sampling_period_hours} hour(s), and ${plant.sampling_period_minutes} minute(s)`}</p>
+            <p><strong>Maximum Time in the Sun:</strong> {(plant.max_sunlight === null) ? "N/A" : `${plant.max_sunlight_days} day(s), ${plant.max_sunlight_hours} hour(s), and ${plant.max_sunlight_minutes} minute(s)`}</p>
+            <p><strong>Prefers:</strong> {`${getPrefSMV(plant.smv_percentage)} Soil`}</p>
           </ListCard>
         ))}
 
         <ListCard
           title="Add New Plant"
-          subtitle={""}
+          subtitle=""
           image="null"
           buttonLabel={showForm ? "Cancel" : "+"}
           onButtonClick={() => setShowForm((prev) => !prev)}
           forceExpanded={showForm}
           forceRegular
+          extraStyles={"no-hover plant-card"}
         >
-          {showForm && (
-            <form
-              className="new-plant-form"
-              style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "10px" }}
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleAddPlant();
-              }}
-            >
-              {[
-                { name: "name", label: "Name", type: "text" },
-                { name: "wateringTimer", label: "Watering Timer (minutes)", type: "number" },
-                { name: "samplingPeriod", label: "Sampling Period (minutes)", type: "number" },
-                { name: "smv", label: "Soil Moisture Percentage", type: "number" },
-                { name: "maxSunlight", label: "Max Sunlight Level", type: "number" },
-              ].map((field) => (
-                <label key={field.name} style={{ display: "flex", flexDirection: "column" }}>
-                  {field.label}
-                  <input
-                    className="card-button"
-                    type={field.type}
-                    name={field.name}
-                    value={formData[field.name]}
-                    onChange={handleInputChange}
-                    onClick={(e) => e.stopPropagation()}
-                    onFocus={(e) => e.stopPropagation()}
-                    style={{ textAlign: "center" }}
-                  />
-                </label>
-              ))}
-
-              <button type="submit" className="card-button" disabled={loading}>
-                {loading ? "Adding..." : "Add Plant"}
-              </button>
-            </form>
-          )}
+          <AnimatePresence mode="wait">
+            {showForm && (
+              <motion.div
+                key="newPlantForm"
+                initial={{ height: 0, opacity: 0, y: -10 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                style={{ overflow: "hidden" }}
+              >
+                <NewPlantForm
+                  userUuid={userUuid}
+                  onPlantsUpdated={setPlantList}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </ListCard>
       </div>
     </div>
