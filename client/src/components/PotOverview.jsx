@@ -87,44 +87,46 @@ const PotOverview = () => {
   }
 
   return (
-    <div className="list-container">
-      {/* <motion.div */}
-      {/*   animate={{ */}
-      {/*     scale: focusedPot ? 0 : 1, */}
-      {/*     opacity: focusedPot ? 0 : 1, */}
-      {/*   }} */}
-      {/*   transition={{ type: "spring", stiffness: 200, damping: 20 }} */}
-      {/* > */}
-      {/*   <NotificationsPanel user={user} /> */}
-      {/* </motion.div> */}
+    <div class="full-bleed">
+      <div className="list-container">
+        {/* <motion.div */}
+        {/*   animate={{ */}
+        {/*     scale: focusedPot ? 0 : 1, */}
+        {/*     opacity: focusedPot ? 0 : 1, */}
+        {/*   }} */}
+        {/*   transition={{ type: "spring", stiffness: 200, damping: 20 }} */}
+        {/* > */}
+        {/*   <NotificationsPanel user={user} /> */}
+        {/* </motion.div> */}
 
-      <motion.h2
-        className="section-title"
-        layout
-        animate={{
-          y: focusedPot ? -40 : 0,
-          opacity: focusedPot ? 0.6 : 1,
-          scale: focusedPot ? 0.9 : 1,
-        }}
-        transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      >
-        Welcome, {user?.given_name}
-      </motion.h2>
+        <motion.h2
+          className="section-title"
+          layout
+          animate={{
+            y: focusedPot ? -40 : 0,
+            opacity: focusedPot ? 0.6 : 1,
+            scale: focusedPot ? 0.9 : 1,
+          }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+        >
+          Welcome, {user?.given_name}
+        </motion.h2>
 
-      <FocusedPot
-        focusedPot={focusedPot}
-        plants={plants}
-        onClose={() => {handleCloseFocus(); setIsRefreshPaused(false);}}
-        onSave={handleSaveAndRefresh}
-        setIsRefreshPaused={setIsRefreshPaused}
-      />
+        <FocusedPot
+          focusedPot={focusedPot}
+          plants={plants}
+          onClose={() => {handleCloseFocus(); setIsRefreshPaused(false);}}
+          onSave={handleSaveAndRefresh}
+          setIsRefreshPaused={setIsRefreshPaused}
+        />
 
-      <PotList
-        key={pots.map(p => p.id).join(",")}
-        pots={pots}
-        focusedPot={focusedPot}
-        buttonClick={handleButtonClick}
-      />
+        <PotList
+          key={pots.map(p => p.id).join(",")}
+          pots={pots}
+          focusedPot={focusedPot}
+          buttonClick={handleButtonClick}
+        />
+      </div>
     </div>
   );
 };

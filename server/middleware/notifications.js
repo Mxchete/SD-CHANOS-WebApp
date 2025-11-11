@@ -29,23 +29,25 @@ async function handlePotNotifications(uuid, battery_level, water_level_is_low, t
   if (water_level_is_low) {
     notificationsToCreate.push({
       header: "Water Level Low",
-      message: `Your pot ${pot.name} is running low on water, please refill it now!`,
+      message: `Your plant ${pot.name} is running low on water, please refill it now!`,
     });
   }
 
   if (battery_level < 6.25) {
     notificationsToCreate.push({
       header: "Battery Level Low",
-      message: `Your pot ${pot.name} has a low battery, please recharge it!`,
+      message: `Your plant ${pot.name} has a low battery, please recharge it!`,
     });
   }
 
   if (total_sunlight > pot.maximum_sunlight) {
     notificationsToCreate.push({
       header: "Pot Sunlight Exceeded",
-      message: `Your pot ${pot.name} has received more sunlight than recommended (${total_sunlight} > ${pot.maximum_sunlight}). Please move it to a shaded area!`,
+      message: `Your plant ${pot.name} has received more sunlight than recommended. Please move it to a shaded area!`,
     });
   }
+
+  // console.log(notificationsToCreate);
 
   for (const notif of notificationsToCreate) {
     await pool.query(
@@ -64,7 +66,7 @@ async function handlePotNotifications(uuid, battery_level, water_level_is_low, t
     );
   }
 
-  if (battery_level >= 3) {
+  if (battery_level >= 6.25) {
     await pool.query(
       `DELETE FROM notifications WHERE pot_id = $1 AND header = $2;`,
       [pot.id, "Battery Level Low"]

@@ -3,6 +3,9 @@
 }
 
 .focused-card {
+  height: 80vh;
+  width: 80vw;
+  align-self: center;
   margin-bottom: 1.5rem;
   z-index: 2;
 }
@@ -27,3 +30,15 @@
   padding: 1rem;
   margin-top: 1rem;
 }
+
+/*
+Source - https://stackoverflow.com/a
+Posted by John Solly, modified by community. See post 'Timeline' for change history
+Retrieved 2025-11-11, License - CC BY-SA 4.0
+*/
+
+.full-bleed {
+  box-shadow: 0 0 100vh 100vmax var(--background-color);
+  clip-path: inset(-100vh -100vmax); 
+}
+
