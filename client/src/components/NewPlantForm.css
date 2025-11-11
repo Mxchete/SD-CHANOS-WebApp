@@ -91,6 +91,8 @@
   border-radius: 6px;
   padding: 4px;
   max-width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .smv-option {
@@ -99,8 +101,11 @@
   background-color: var(--button-background);
   cursor: pointer;
   transition: all 0.2s;
+  color: var(--foreground-color);
   flex: 1;
+  /* flex-wrap: wrap; */
   text-align: center;
+  /* align-items: center; */
   border: 0px;
   max-width: 100px;
 }

@@ -5,7 +5,7 @@
 .focused-card {
   height: 80vh;
   width: 80vw;
-  align-self: center;
+  align-self: left;
   margin-bottom: 1.5rem;
   z-index: 2;
 }
@@ -38,7 +38,7 @@ Retrieved 2025-11-11, License - CC BY-SA 4.0
 */
 
 .full-bleed {
-  box-shadow: 0 0 100vh 100vmax var(--background-color);
-  clip-path: inset(-100vh -100vmax); 
+  box-shadow: 0 0 100vmax 100vmax var(--background-color);
+  clip-path: inset(-100vmax -100vmax); 
 }
 

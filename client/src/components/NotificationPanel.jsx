@@ -20,7 +20,7 @@ export default function NotificationsPanel({ user }) {
 
     fetchNotifications();
 
-    const interval = setInterval(fetchNotifications, 120000);
+    const interval = setInterval(fetchNotifications, 5000);
     return () => clearInterval(interval);
   }, []);
 
