@@ -57,6 +57,25 @@ class PotService {
     lux_value,
     total_sunlight
   ) => {
+    const { rows: currentPots } = await pool.query(
+      `SELECT battery_level, charging_state FROM pots WHERE id = $1;`,
+      [uuid]
+    );
+
+    if (currentPots.length === 0) {
+      throw new Error("Pot not found");
+    }
+
+    const currentPot = currentPots[0];
+    let newChargingState = currentPot.charging_state;
+
+    if (battery_level > currentPot.battery_level) {
+      newChargingState = Math.min(newChargingState + 1, 3);
+    }
+    else if (battery_level < currentPot.battery_level) {
+      newChargingState = Math.max(newChargingState - 1, 0);
+    }
+
     const { rows: pots } = await pool.query(
       `UPDATE pots
       SET battery_level = $2,
@@ -64,10 +83,11 @@ class PotService {
           current_moisture_level = $4,
           lux_value = $5,
           total_sunlight = $6,
+          charging_state = $7,
           updated_at = NOW()
       WHERE id = $1
       RETURNING *;`,
-      [uuid, battery_level, water_level_is_low, current_smv, lux_value, total_sunlight]
+      [uuid, battery_level, water_level_is_low, current_smv, lux_value, total_sunlight, newChargingState]
     );
 
     await handlePotNotifications(uuid, battery_level, water_level_is_low, total_sunlight);

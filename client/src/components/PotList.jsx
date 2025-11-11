@@ -32,7 +32,7 @@ const PotList = ({ pots, focusedPot, buttonClick }) => {
             >
               <p><strong>Pot ID:</strong> {isAvailable(pot.id)}</p>
               <p><strong>Plant:</strong> {pot.plantName}</p>
-              <p>Battery Level: {(pot.battery_level !== null) ? `${Math.round(((pot.battery_level - 6) * 100)/2.4)}%` : "N/A"}</p>
+              <p>Battery Level: {(pot.battery_level !== null) ? `${Math.round(((pot.battery_level - 6) * 100)/2.4)}% (${pot.charging_state > 1 ? "Charging" : "Discharging"})` : "N/A"}</p>
               <p>Current Soil Moisture Value: {isAvailable(pot.current_moisture_level)}</p>
               <p>Light Level: {isAvailable(pot.lux_value)}</p>
               <p>Total Time in Sunlight: {isAvailable(pot.total_sunlight)}</p>

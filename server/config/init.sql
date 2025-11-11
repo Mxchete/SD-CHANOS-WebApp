@@ -47,6 +47,7 @@ CREATE TABLE public.pots (
     plant_id UUID,
     image_url TEXT,
     battery_level DOUBLE PRECISION,
+    charging_state INT DEFAULT 0,
     water_level_is_low BOOLEAN,
     current_moisture_level DOUBLE PRECISION,
     lux_value DOUBLE PRECISION,
