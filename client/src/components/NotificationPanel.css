@@ -8,6 +8,7 @@
   max-width: 500px;
   cursor: pointer;
   overflow: hidden;
+  align-self: center;
 }
 
 .notifications-panel.expanded {
@@ -62,4 +63,5 @@
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+  align-self: center;
 }
