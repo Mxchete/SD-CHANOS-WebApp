@@ -57,7 +57,7 @@ function TimeInput({ label, fieldPrefix, formData, setFormData, extraStyle="", f
   );
 }
 
-export default function NewPlantForm({ userUuid, onPlantsUpdated }) {
+export default function NewPlantForm({ userUuid, onPlantsUpdated, formShown }) {
   const [formData, setFormData] = useState({
     name: "",
     samplingPeriodDays: "",
@@ -180,6 +180,7 @@ export default function NewPlantForm({ userUuid, onPlantsUpdated }) {
     }
 
     setLoading(false);
+    formShown(false);
   };
 
   return (

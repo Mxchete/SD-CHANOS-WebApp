@@ -95,6 +95,7 @@ const PlantList = ({ plants, userUuid, onSelectPlant, selectedPlantUuid }) => {
                 <NewPlantForm
                   userUuid={userUuid}
                   onPlantsUpdated={setPlantList}
+                  formShown={setShowForm}
                 />
               </motion.div>
             )}
