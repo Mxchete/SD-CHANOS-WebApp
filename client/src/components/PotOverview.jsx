@@ -29,15 +29,18 @@ const PotOverview = () => {
     const potsWithPlants = await Promise.all(
       potsData.map(async (pot) => {
         let plantName = "None";
+        let plantSmv = null;
         if (pot.plant_id) {
           try {
             const plant = await getPlant(pot.plant_id);
             plantName = plant?.name || "Unknown Plant";
+            plantSmv = plant?.smv_percentage || null;
           } catch {
             plantName = "Unknown Plant";
+            plantSmv = null;
           }
         }
-        return { ...pot, plantName };
+        return { ...pot, plantName, plantSmv };
       })
     );
 

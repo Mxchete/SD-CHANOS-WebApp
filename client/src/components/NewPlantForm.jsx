@@ -133,11 +133,11 @@ export default function NewPlantForm({ userUuid, onPlantsUpdated }) {
     const numMaxSunlightHours = Number(maxSunlightHours || 0);
     const numMaxSunlightMinutes = Number(maxSunlightMinutes || 0);
 
-    const maxSunlightTotal = convertToUs({
+    const maxSunlightTotal = dayjs.duration({
       days: numMaxSunlightDays,
       hours: numMaxSunlightHours,
       minutes: numMaxSunlightMinutes
-    });
+    }).asMinutes();
 
     if (!name || !smv || !wateringMilliliters || !samplingPeriodTotal || !maxSunlightTotal) {
       alert("Please fill all required fields.");
