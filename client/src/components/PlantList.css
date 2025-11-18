@@ -1,6 +1,6 @@
 .selected-plant {
   border: 2px solid #4caf50;
-  background-color: var(--button-background);
+  /* background-color: var(--button-background); */
 }
 
 .plant-card {

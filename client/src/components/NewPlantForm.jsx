@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -10,7 +10,7 @@ import { addPlant, getUserPlants } from "../api";
 
 dayjs.extend(duration);
 
-function TimeInput({ label, fieldPrefix, formData, setFormData, extraStyle="", fields = ["Days", "Hours", "Minutes"]}) {
+function TimeInput({ label, fieldPrefix, formData, setFormData, extraStyle = "", fields = ["Days", "Hours", "Minutes"] }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -31,7 +31,7 @@ function TimeInput({ label, fieldPrefix, formData, setFormData, extraStyle="", f
         {fields.map((unit) => {
           const name = `${fieldPrefix}${unit}`;
           return (
-            <div key={name} className={`form-input time-input-wrapper  ${extraStyle}`}>
+            <div key={name} className={`form-input time-input-wrapper ${extraStyle}`}>
               <input
                 type="number"
                 placeholder={unit}
@@ -57,7 +57,7 @@ function TimeInput({ label, fieldPrefix, formData, setFormData, extraStyle="", f
   );
 }
 
-export default function NewPlantForm({ userUuid, onPlantsUpdated, formShown }) {
+export default function NewPlantForm({ userUuid, onPlantsUpdated, formShown, parentPlant = null }) {
   const [formData, setFormData] = useState({
     name: "",
     samplingPeriodDays: "",
@@ -69,24 +69,35 @@ export default function NewPlantForm({ userUuid, onPlantsUpdated, formShown }) {
     maxSunlightHours: "",
     maxSunlightMinutes: "",
   });
+
   const [loading, setLoading] = useState(false);
 
   // As a percent (i.e. 80 is 80%)
   const smvOptions = [
     { value: 80, label: "Wet" },
     { value: 65, label: "Moist" },
-    { value: 35, label: "Damp" },
+    { value: 30, label: "Damp" },
     { value: 20, label: "Dry" },
   ];
 
+  useEffect(() => {
+    if (parentPlant) {
+      setFormData({
+        name: parentPlant.name || "",
+        samplingPeriodDays: parentPlant.sampling_period_days || 0,
+        samplingPeriodHours: parentPlant.sampling_period_hours || 0,
+        samplingPeriodMinutes: parentPlant.sampling_period_minutes || 0,
+        wateringMilliliters: (100 * (parentPlant.watering_timer_useconds / 60 / 1_000_000 / 1.5)) || 0,
+        smv: parentPlant.smv_percentage ? parentPlant.smv_percentage * 100 : "",
+        maxSunlightDays: parentPlant.max_sunlight_days || 0,
+        maxSunlightHours: parentPlant.max_sunlight_hours || 0,
+        maxSunlightMinutes: parentPlant.max_sunlight_minutes || 0,
+      });
+    }
+  }, [parentPlant]);
+
   const convertToMs = ({ days = 0, hours = 0, minutes = 0, seconds = 0 }) => {
-    const dur = dayjs.duration({
-      days,
-      hours,
-      minutes,
-      seconds,
-    });
-    return dur.asMilliseconds();
+    return dayjs.duration({ days, hours, minutes, seconds }).asMilliseconds();
   };
 
   const convertToUs = ({ days = 0, hours = 0, minutes = 0, seconds = 0 }) => {
@@ -119,25 +130,19 @@ export default function NewPlantForm({ userUuid, onPlantsUpdated, formShown }) {
 
     setLoading(true);
 
-    const numSamplePeriodDays = Number(samplingPeriodDays || 0);
-    const numSamplePeriodHours = Number(samplingPeriodHours || 0);
-    const numSamplePeriodMinutes = Number(samplingPeriodMinutes || 0);
-
     const samplingPeriodTotal = convertToUs({
-      days: numSamplePeriodDays,
-      hours: numSamplePeriodHours,
-      minutes: numSamplePeriodMinutes
+      days: Number(samplingPeriodDays || 0),
+      hours: Number(samplingPeriodHours || 0),
+      minutes: Number(samplingPeriodMinutes || 0),
     });
 
-    const numMaxSunlightDays = Number(maxSunlightDays || 0);
-    const numMaxSunlightHours = Number(maxSunlightHours || 0);
-    const numMaxSunlightMinutes = Number(maxSunlightMinutes || 0);
-
-    const maxSunlightTotal = dayjs.duration({
-      days: numMaxSunlightDays,
-      hours: numMaxSunlightHours,
-      minutes: numMaxSunlightMinutes
-    }).asMinutes();
+    const maxSunlightTotal = dayjs
+      .duration({
+        days: Number(maxSunlightDays || 0),
+        hours: Number(maxSunlightHours || 0),
+        minutes: Number(maxSunlightMinutes || 0),
+      })
+      .asMinutes();
 
     if (!name || !smv || !wateringMilliliters || !samplingPeriodTotal || !maxSunlightTotal) {
       alert("Please fill all required fields.");
@@ -150,19 +155,22 @@ export default function NewPlantForm({ userUuid, onPlantsUpdated, formShown }) {
       name,
       watering_timer_useconds: Math.round(((wateringMilliliters / 100) * 1.5) * 60 * 1_000_000),
       sampling_period: samplingPeriodTotal,
-      sampling_period_minutes: numSamplePeriodMinutes,
-      sampling_period_hours: numSamplePeriodHours,
-      sampling_period_days: numSamplePeriodDays,
+      sampling_period_minutes: Number(samplingPeriodMinutes || 0),
+      sampling_period_hours: Number(samplingPeriodHours || 0),
+      sampling_period_days: Number(samplingPeriodDays || 0),
       smv_percentage: Number(smv / 100),
       maximum_sunlight: maxSunlightTotal,
-      max_sunlight_minutes: numMaxSunlightMinutes,
-      max_sunlight_hours: numMaxSunlightHours,
-      max_sunlight_days: numMaxSunlightDays,
+      max_sunlight_minutes: Number(maxSunlightMinutes || 0),
+      max_sunlight_hours: Number(maxSunlightHours || 0),
+      max_sunlight_days: Number(maxSunlightDays || 0),
     };
 
-    console.log(dataToSend);
+    if (parentPlant?.id) {
+      dataToSend.parent_id = parentPlant.id;
+    }
 
     const newPlant = await addPlant(dataToSend);
+
     if (newPlant) {
       const updatedPlants = await getUserPlants(userUuid);
       onPlantsUpdated(updatedPlants || []);
@@ -236,9 +244,8 @@ export default function NewPlantForm({ userUuid, onPlantsUpdated, formShown }) {
       </div>
 
       <button type="submit" className="card-button add-plant" disabled={loading}>
-        {loading ? "Adding..." : "Add Plant"}
+        {loading ? "Adding..." : parentPlant ? "Clone Plant" : "Add Plant"}
       </button>
     </form>
   );
 }
-
