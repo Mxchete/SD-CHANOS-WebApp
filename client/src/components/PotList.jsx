@@ -10,9 +10,7 @@ dayjs.extend(duration);
 const PotList = ({ pots, focusedPot, buttonClick }) => {
   const isAvailable = (item) => ((item === null) ? "N/A" : item);
 
-  const smvPercentageReadable = (smvNum, smvPercent) => {
-    const wet = 1530.2288;
-    const dry = 3173.3255;
+  const smvPercentageReadable = (smvNum, smvPercent, wet = 1530.2288, dry = 3173.3255) => {
     const thresh = dry - (dry - wet)*(smvPercent / 100);
     console.log(thresh);
 
@@ -76,7 +74,7 @@ const PotList = ({ pots, focusedPot, buttonClick }) => {
               <p><strong>Pot ID:</strong> {isAvailable(pot.id)}</p>
               <p><strong>Plant:</strong> {pot.plantName}</p>
               <p>Battery Level: {(pot.battery_level !== null) ? `${Math.round(((pot.battery_level - 6) * 100)/2.4)}% (${pot.charging_state > 1 ? "Charging" : "Discharging"})` : "N/A"}</p>
-              <p>Current Soil Moisture Value: {(pot.current_moisture_level !== null && pot.plantSmv !== null) ? smvPercentageReadable(pot.current_moisture_level, pot.plantSmv) : "N/A"}</p>
+              <p>Current Soil Moisture Value: {(pot.current_moisture_level !== null && pot.plantSmv !== null) ? smvPercentageReadable(pot.current_moisture_level, pot.plantSmv, pot.plantWetSmv ?? 1530.2288, pot.plantDrySmv ?? 3173.3255) : "N/A"}</p>
               <p>Light Level: {pot.lux_value === null ? "N/A" : getLightLevel(Number(pot.lux_value))}</p>
               <p>Total Time in Sunlight: {pot.total_sunlight === null ? "N/A" : calcSunlight(Number(pot.total_sunlight))}</p>
               <p>{pot.water_level_is_low ? "Water level is low" : "Water level is good"}</p>

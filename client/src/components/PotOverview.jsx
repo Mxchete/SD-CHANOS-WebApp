@@ -30,17 +30,16 @@ const PotOverview = () => {
       potsData.map(async (pot) => {
         let plantName = "None";
         let plantSmv = null;
+        let plantWetSmv = null;
+        let plantDrySmv = null;
         if (pot.plant_id) {
-          try {
-            const plant = await getPlant(pot.plant_id);
-            plantName = plant?.name || "Unknown Plant";
-            plantSmv = plant?.smv_percentage || null;
-          } catch {
-            plantName = "Unknown Plant";
-            plantSmv = null;
-          }
+          const plant = await getPlant(pot.plant_id);
+          plantName = plant?.name || "Unknown Plant";
+          plantSmv = plant?.smv_percentage || null;
+          plantWetSmv = plant?.minimum_moisture_level || null;
+          plantDrySmv = plant?.maximum_moisture_level || null;
         }
-        return { ...pot, plantName, plantSmv };
+        return { ...pot, plantName, plantSmv, plantWetSmv, plantDrySmv };
       })
     );
 
