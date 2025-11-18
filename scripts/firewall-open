@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Opens up ports on local machine for local testing.
+sudo firewall-cmd --add-port=3000/tcp
+sudo firewall-cmd --add-port=4000/tcp
