@@ -18,9 +18,13 @@
   background: var(--background-color);
   box-shadow: -2px 0 10px rgba(0,0,0,0.2);
   z-index: 1000;
-  padding: 1rem;
+  padding-top: 80px;
+  padding-left: 1rem;
+  padding-right: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 .sidebar-bleed {
@@ -28,11 +32,19 @@
   clip-path: inset(-100vh -100vmax); 
 }
 
+.sidebar > * {
+  flex: 0 0 auto !important;
+  margin-top: 0 !important;
+  align-self: flex-start !important;
+}
+
 @media (max-width: 600px) {
   .sidebar {
     width: 100%;
     max-width: 100%;
-    padding: 0;
+    padding-top: 80px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .sidebar-overlay {

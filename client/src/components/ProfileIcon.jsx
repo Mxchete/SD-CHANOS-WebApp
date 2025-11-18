@@ -43,7 +43,7 @@ export default function UserProfileIcon() {
 
       <Sidebar isOpen={sidebarOpen} onClose={handleClose}>
         <NotificationsPanel user={user} />
-        {/* <UserMenuPanel user={user} onLogout={clearAuthToken} /> */}
+        <UserMenuPanel user={user} onLogout={clearAuthToken} />
       </Sidebar>
     </>
   );

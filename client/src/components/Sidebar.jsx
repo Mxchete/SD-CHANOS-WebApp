@@ -22,7 +22,6 @@ export default function Sidebar({ isOpen, onClose, children }) {
             exit={{ x: "-100%" }}
             transition={{ type: "tween" }}
           >
-            <div style={{ height: "60px" }}></div>
             {children}
           </motion.div>
         </>
