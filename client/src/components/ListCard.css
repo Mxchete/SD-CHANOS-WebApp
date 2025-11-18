@@ -172,7 +172,7 @@
   cursor: pointer;
   box-shadow: none;
   width: 100%;
-  max-width: 2400px;
+  /* max-width: 2400px; */
   flex-wrap: wrap;
   display: flex;
   justify-content: space-between;

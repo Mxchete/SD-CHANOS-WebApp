@@ -1,11 +1,9 @@
 .list-container {
-  padding: 1rem;
+  padding: 0rem;
+  align-items: center;
 }
 
 .focused-card {
-  height: 80vh;
-  width: 80vw;
-  align-self: left;
   margin-bottom: 1.5rem;
   z-index: 2;
 }
@@ -42,3 +40,9 @@ Retrieved 2025-11-11, License - CC BY-SA 4.0
   clip-path: inset(-100vmax -100vmax); 
 }
 
+@media (max-width: 600px) {
+  .focused-card {
+    height: 80vh;
+    width: 80vw;
+  }
+}

@@ -87,7 +87,7 @@ export default function NewPlantForm({ userUuid, onPlantsUpdated, formShown, par
         samplingPeriodDays: parentPlant.sampling_period_days || 0,
         samplingPeriodHours: parentPlant.sampling_period_hours || 0,
         samplingPeriodMinutes: parentPlant.sampling_period_minutes || 0,
-        wateringMilliliters: (100 * (parentPlant.watering_timer_useconds / 60 / 1_000_000 / 1.5)) || 0,
+        wateringMilliliters: Math.round(100 * (parentPlant.watering_timer_useconds / 60 / 1_000_000 / 1.5)) || 0,
         smv: parentPlant.smv_percentage ? parentPlant.smv_percentage * 100 : "",
         maxSunlightDays: parentPlant.max_sunlight_days || 0,
         maxSunlightHours: parentPlant.max_sunlight_hours || 0,
