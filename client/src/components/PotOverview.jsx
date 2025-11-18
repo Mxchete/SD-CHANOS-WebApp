@@ -122,12 +122,14 @@ const PotOverview = () => {
           setIsRefreshPaused={setIsRefreshPaused}
         />
 
-        <PotList
-          key={pots.map(p => p.id).join(",")}
-          pots={pots}
-          focusedPot={focusedPot}
-          buttonClick={handleButtonClick}
-        />
+        {!focusedPot && (
+          <PotList
+            key={pots.map(p => p.id).join(",")}
+            pots={pots}
+            focusedPot={focusedPot}
+            buttonClick={handleButtonClick}
+          />
+        )}
       </div>
     </div>
   );
