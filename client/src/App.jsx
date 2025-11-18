@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import React from "react";
 import LoginPage from "./components/LoginPage";
-import logo from './assets/logo.png'
-import './App.css'
+import logo from './assets/logo.png';
+import './App.css';
 
 function App() {
   const navigate = useNavigate();

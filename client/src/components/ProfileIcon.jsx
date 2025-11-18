@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import NotificationsPanel from "./NotificationPanel";
 import UserMenuPanel from "./UserMenuPanel";
 import "./ProfileIcon.css";
+import default_picture from '../assets/default_picture.png';
 
 export default function UserProfileIcon() {
   const [user, setUser] = useState(null);
@@ -35,7 +36,7 @@ export default function UserProfileIcon() {
     <>
       <div className="user-profile-icon" onClick={handleClick}>
         <img
-          src={user.picture_url}
+          src={user.picture_url || default_picture}
           alt={user.name}
           className="user-profile-avatar"
         />
