@@ -29,11 +29,11 @@ export default function NotificationsPanel({ user }) {
   }
 
   return (
-    <div className="list card-content">
+    <div className="notifications-panel">
       <ListCard
         title={`Notifications (${notifications.length})`}
         image="null"
-        extraStyles="notifications-container"
+        extraStyles="notifications-container no-hover"
         onTitleChange={() => {}}
         editable={false}
         onButtonClick={null}

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../global.css";
 import "./NotificationPanel.css";
+import "./UserMenuPanel.css";
 import ListCard from "./ListCard";
 
 export default function UserMenuPanel({ user, onLogout }) {
@@ -27,9 +28,9 @@ export default function UserMenuPanel({ user, onLogout }) {
   ];
 
   return (
-    <div className="list card-content">
+    <div className="notifications-panel">
       <ListCard
-        title={`User Menu`}
+        title={`Pages`}
         image="null"
         extraStyles="notifications-container"
         onTitleChange={() => {}}
@@ -39,25 +40,12 @@ export default function UserMenuPanel({ user, onLogout }) {
         extraStyles={"no-hover"}
       >
         {menuItems.map((item) => (
-          <ListCard
-            key={item.id}
-            title={null}
-            image="null"
-            editable={false}
-            forceRegular={true}
-            extraStyles="notif-item"
-            forceExpanded={false}
-            buttonLabel={item.title}
-            onButtonClick={item.onClick}
-            extraStyles={"no-hover plant-card"}
-          >
             <button
-              className="menu-button"
+              className="menu-button card-button"
               onClick={item.onClick}
             >
               {item.title}
             </button>
-          </ListCard>
         ))}
       </ListCard>
     </div>

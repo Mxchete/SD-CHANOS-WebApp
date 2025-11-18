@@ -26,6 +26,7 @@
 
 .list-card.no-hover:hover {
   transform: none;
+  box-shadow: none;
   cursor: default;
 }
 
